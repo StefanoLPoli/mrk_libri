@@ -1,0 +1,92 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Modelli per NextAuth
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?  // <-- Tolto @db.Text
+  access_token      String?  // <-- Tolto @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?  // <-- Tolto @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// I tuoi modelli esistenti (con piccole modifiche)
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?   // Opzionale per chi usa OAuth
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+  listings Listing[]
+}
+
+model Book {
+  id            String   @id @default(cuid())
+  isbn          String   @unique
+  title         String
+  author        String?
+  publisher     String?
+  publishedYear Int?
+  pageCount     Int?
+  coverUrl      String?
+  description   String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  listings      Listing[]
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  bookId      String
+  book        Book     @relation(fields: [bookId], references: [id])
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  price       Float
+  condition   String
+  description String?
+  images      String   // JSON string degli URL delle foto
+  status      String   @default("ATTIVO")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}

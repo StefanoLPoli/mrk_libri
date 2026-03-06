@@ -1,0 +1,119 @@
+{
+  "9788804668237": {
+    "book": {
+      "isbn": "9788804668237",
+      "title": "1984",
+      "author": "George Orwell",
+      "publisher": "Mondadori",
+      "publishedYear": 2016,
+      "pageCount": 321,
+      "coverUrl": "https://covers.openlibrary.org/b/id/10450880-L.jpg",
+      "description": "It was a bright cold day in April, and the clocks were striking thirteen."
+    },
+    "timestamp": 1771522949178
+  },
+  "9788807881060": {
+    "book": {
+      "isbn": "9788807881060",
+      "title": "Autostop con Buddha. Viaggio attraverso il Giappone",
+      "author": "Will Ferguson",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 2013,
+      "pageCount": 454,
+      "coverUrl": "http://books.google.com/books/content?id=STObMwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "description": null
+    },
+    "timestamp": 1771523551814
+  },
+  "9788807900389": {
+    "book": {
+      "isbn": "9788807900389",
+      "title": "Il fu Mattia Pascal",
+      "author": "Luigi Pirandello, A. Gagliardi",
+      "publisher": "Feltrinelli",
+      "publishedYear": 2013,
+      "pageCount": 288,
+      "coverUrl": "https://covers.openlibrary.org/b/id/12519139-L.jpg",
+      "description": null
+    },
+    "timestamp": 1771525006445
+  },
+  "9788880958147": {
+    "book": {
+      "isbn": "9788880958147",
+      "title": "Ramesse II",
+      "author": "James T. Henry",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 2002,
+      "pageCount": 304,
+      "coverUrl": "http://books.google.com/books/content?id=mLS8AAAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "description": null
+    },
+    "timestamp": 1771525032490
+  },
+  "9781665955461": {
+    "book": {
+      "isbn": "9781665955461",
+      "title": "Fearless",
+      "author": "Lauren Roberts",
+      "publisher": "Simon & Schuster",
+      "publishedYear": 2025,
+      "pageCount": 608,
+      "coverUrl": "https://covers.openlibrary.org/b/id/14840900-L.jpg",
+      "description": null
+    },
+    "timestamp": 1771583580413
+  },
+  "9781035045471": {
+    "book": {
+      "isbn": "9781035045471",
+      "title": "Rewitched",
+      "author": "Lucy Jane Wood",
+      "publisher": "PAN MACMILLAN",
+      "publishedYear": 2025,
+      "pageCount": 423,
+      "coverUrl": "https://covers.openlibrary.org/b/id/15127855-L.jpg",
+      "description": null
+    },
+    "timestamp": 1771604969518
+  },
+  "9788804408796": {
+    "book": {
+      "isbn": "9788804408796",
+      "title": "Il barone rampante",
+      "author": "Italo Calvino",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 1995,
+      "pageCount": 303,
+      "coverUrl": null,
+      "description": null
+    },
+    "timestamp": 1771605383408
+  },
+  "8804408790": {
+    "book": {
+      "isbn": "8804408790",
+      "title": "Il barone rampante",
+      "author": "Italo Calvino",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 1995,
+      "pageCount": 303,
+      "coverUrl": null,
+      "description": null
+    },
+    "timestamp": 1771605397540
+  },
+  "9780747558194": {
+    "book": {
+      "isbn": "9780747558194",
+      "title": "Harry Potter and the Philosopher's Stone",
+      "author": "J. K. Rowling",
+      "publisher": "Bloomsbury Publishing",
+      "publishedYear": 2001,
+      "pageCount": 224,
+      "coverUrl": "https://covers.openlibrary.org/b/id/7356018-L.jpg",
+      "description": "Mr. And Mrs. Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much."
+    },
+    "timestamp": 1772818284335
+  }
+}
