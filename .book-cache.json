@@ -115,5 +115,31 @@
       "description": "Mr. And Mrs. Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much."
     },
     "timestamp": 1772818284335
+  },
+  "9784088807232": {
+    "book": {
+      "isbn": "9784088807232",
+      "title": "鬼滅の刃 1",
+      "author": "Koyoharu Gotōge",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": null,
+      "pageCount": null,
+      "coverUrl": "https://covers.openlibrary.org/b/id/9364005-L.jpg",
+      "description": null
+    },
+    "timestamp": 1772820399094
+  },
+  "9780553448184": {
+    "book": {
+      "isbn": "9780553448184",
+      "title": "The Vegetarian",
+      "author": "Han Kang",
+      "publisher": "Hogarth",
+      "publishedYear": 2016,
+      "pageCount": 188,
+      "coverUrl": "https://covers.openlibrary.org/b/id/7412625-L.jpg",
+      "description": null
+    },
+    "timestamp": 1772821893221
   }
 }

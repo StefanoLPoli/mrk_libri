@@ -85,7 +85,11 @@ export default function CompraPage() {
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {listings.map((listing) => (
-                        <div key={listing.id} className="border border-lightgray p-4 hover:shadow-medium transition-shadow">
+                        <Link 
+                            key={listing.id}
+                            href={`/compra/${listing.id}`}  // ← Link alla pagina di dettaglio
+                            className="block border border-lightgray p-4 hover:shadow-medium transition-shadow cursor-pointer"
+                        >
                             <div className="flex gap-4">
                                 {listing.book.coverUrl ? (
                                     <img 
@@ -112,13 +116,11 @@ export default function CompraPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="mt-3 pt-3 border-t border-lightgray text-xs text-midgray flex justify-between">
+                            <div className="mt-3 pt-3 border-t border-lightgray text-xs text-midgray flex justify-between items-center">
                                 <span>Venduto da: {listing.user.name || listing.user.email}</span>
-                                <button className="text-black hover:underline">
-                                    Contatta
-                                </button>
+                                <span className="text-black text-sm">→</span>
                             </div>
-                        </div>
+                        </Link>
                     ))}
                 </div>
             )}

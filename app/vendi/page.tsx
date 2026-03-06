@@ -30,6 +30,9 @@ export default function VendiPage() {
     const [description, setDescription] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Nuovi stati per le foto
+    const [images, setImages] = useState<UploadedImage[]>([]);
+    const [isUploading, setIsUploading] = useState(false);
 
     // ✅ EFFETTO PER IL REDIRECT
     useEffect(() => {
@@ -39,26 +42,58 @@ export default function VendiPage() {
             router.push('/auth/login?callbackUrl=/vendi');
         }
     }, [session, status, router]); // Dipendenze
-    
-    // Se sta caricando, mostra un loader
-    if (status === 'loading') {
-        return <div className="container py-12 text-center">Caricamento...</div>;
-    }
-    
-    // Se non c'è sessione, non mostrare nulla (l'useEffect farà il redirect)
-    if (!session) {
-        return null;
-    }
 
+        // Funzione per gestire upload foto
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files || files.length === 0) return;
 
-    const handleBookSelected = (book: Book) => {
-        setSelectedBook(book);
-        setStep(2);
+        // Limite di 5 foto
+        if (images.length + files.length > 5) {
+            alert('Puoi caricare massimo 5 foto');
+            return;
+        }
+
+        setIsUploading(true);
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            
+            // Preview immediata
+            const previewUrl = URL.createObjectURL(file);
+            setImages(prev => [...prev, { url: previewUrl, file }]);
+
+            // Upload effettivo (opzionale - puoi fare upload dopo o ora)
+            try {
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    // Aggiorna URL con quello vero
+                    setImages(prev => 
+                        prev.map(img => 
+                            img.url === previewUrl 
+                                ? { ...img, url: data.url } 
+                                : img
+                        )
+                    );
+                }
+            } catch (error) {
+                console.error('Upload error:', error);
+            }
+        }
+
+        setIsUploading(false);
     };
 
-    const resetSelection = () => {
-        setSelectedBook(null);
-        setStep(1);
+    const removeImage = (indexToRemove: number) => {
+        setImages(prev => prev.filter((_, index) => index !== indexToRemove));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -76,7 +111,8 @@ export default function VendiPage() {
                     price,
                     condition,
                     description,
-                    userId: session.user?.id
+                    userId: session.user?.id,
+                    images: images.map(img => img.url), // Passa array di URL
                 }),
             });
             
@@ -93,6 +129,28 @@ export default function VendiPage() {
             setIsSubmitting(false);
         }
     };
+    
+    // Se sta caricando, mostra un loader
+    if (status === 'loading') {
+        return <div className="container py-12 text-center">Caricamento...</div>;
+    }
+    
+    // Se non c'è sessione, non mostrare nulla (l'useEffect farà il redirect)
+    if (!session) {
+        return null;
+    }
+
+    const handleBookSelected = (book: Book) => {
+        setSelectedBook(book);
+        setStep(2);
+    };
+
+    const resetSelection = () => {
+        setSelectedBook(null);
+        setStep(1);
+    };
+
+
 
     return (
         <div className="container" style={{ maxWidth: '768px', margin: '0 auto', padding: '3rem 1rem' }}>
@@ -247,18 +305,89 @@ export default function VendiPage() {
                         </div>
                         
                         <div>
-                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.25rem' }}>
-                                Foto (presto disponibile)
+                            <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.5rem' }}>
+                                Foto del libro (max 5)
                             </label>
-                            <div style={{
-                                border: '2px dashed #e5e5e5',
-                                padding: '1.5rem',
-                                textAlign: 'center'
-                            }}>
-                                <p style={{ fontSize: '0.875rem', color: '#9ca3af' }}>
-                                    📸 Upload foto in arrivo...
-                                </p>
-                            </div>
+                            
+                            {/* Preview foto */}
+                            {images.length > 0 && (
+                                <div style={{ 
+                                    display: 'grid', 
+                                    gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))',
+                                    gap: '0.5rem',
+                                    marginBottom: '1rem'
+                                }}>
+                                    {images.map((img, index) => (
+                                        <div key={index} style={{ position: 'relative' }}>
+                                            <img 
+                                                src={img.url} 
+                                                alt={`Preview ${index + 1}`}
+                                                style={{
+                                                    width: '100%',
+                                                    height: '100px',
+                                                    objectFit: 'cover',
+                                                    border: '1px solid #e5e5e5'
+                                                }}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeImage(index)}
+                                                style={{
+                                                    position: 'absolute',
+                                                    top: '4px',
+                                                    right: '4px',
+                                                    width: '24px',
+                                                    height: '24px',
+                                                    borderRadius: '50%',
+                                                    background: 'rgba(0,0,0,0.5)',
+                                                    color: 'white',
+                                                    border: 'none',
+                                                    cursor: 'pointer',
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    justifyContent: 'center',
+                                                    fontSize: '12px'
+                                                }}
+                                            >
+                                                ✕
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            
+                            {/* Bottone upload */}
+                            {images.length < 5 && (
+                                <div style={{
+                                    border: '2px dashed #e5e5e5',
+                                    padding: '1.5rem',
+                                    textAlign: 'center',
+                                    position: 'relative'
+                                }}>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={handleImageUpload}
+                                        disabled={isUploading}
+                                        style={{
+                                            position: 'absolute',
+                                            top: 0,
+                                            left: 0,
+                                            width: '100%',
+                                            height: '100%',
+                                            opacity: 0,
+                                            cursor: 'pointer'
+                                        }}
+                                    />
+                                    <p style={{ fontSize: '0.875rem', color: '#9ca3af' }}>
+                                        {isUploading ? '📸 Caricamento...' : '📸 Clicca per aggiungere foto'}
+                                    </p>
+                                    <p style={{ fontSize: '0.75rem', color: '#9ca3af', marginTop: '0.25rem' }}>
+                                        PNG, JPG, GIF max 5MB
+                                    </p>
+                                </div>
+                            )}
                         </div>
                         
                         <button

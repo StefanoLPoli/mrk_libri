@@ -7,7 +7,8 @@ export async function POST(request: Request) {
         const body = await request.json();
         console.log('📥 API ricevuta:', body);
         
-        const { book, price, condition, description, userId } = body;
+        // Estrai anche images dal body
+        const { book, price, condition, description, userId, images } = body;
         
         // Validazione base
         if (!book?.isbn) {
@@ -67,6 +68,24 @@ export async function POST(request: Request) {
             console.log('✅ Libro creato:', existingBook.id);
         }
         
+        // Prepara le immagini (se presenti)
+        let imagesJson = null;
+        if (images && Array.isArray(images) && images.length > 0) {
+            // Filtra solo URL validi (quelli che iniziano con /uploads/ o http)
+            const validImages = images.filter((img: string) => 
+                img && (img.startsWith('/uploads/') || img.startsWith('http'))
+            );
+            
+            if (validImages.length > 0) {
+                imagesJson = JSON.stringify(validImages);
+                console.log('📸 Foto caricate:', validImages.length);
+            } else {
+                console.log('📸 Nessuna foto valida');
+            }
+        } else {
+            console.log('📸 Nessuna foto fornita');
+        }
+        
         // Crea l'annuncio
         console.log('➕ Creazione annuncio...');
         const listing = await prisma.listing.create({
@@ -76,7 +95,7 @@ export async function POST(request: Request) {
                 price: parseFloat(price),
                 condition: condition,
                 description: description || '',
-                images: JSON.stringify([]),
+                images: imagesJson, // Usa le immagini passate
                 status: 'ATTIVO'
             }
         });

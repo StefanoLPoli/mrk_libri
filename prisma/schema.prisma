@@ -85,7 +85,7 @@ model Listing {
   price       Float
   condition   String
   description String?
-  images      String   // JSON string degli URL delle foto
+  images      String?   // JSON string con array di percorsi immagini
   status      String   @default("ATTIVO")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
