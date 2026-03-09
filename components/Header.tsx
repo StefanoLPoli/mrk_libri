@@ -17,12 +17,6 @@ export default function Header() {
                 </Link>
                 
                 <nav className="flex gap-6 items-center">
-                    <Link href="/" className="text-darkgray hover:text-black transition-colors">
-                        Home
-                    </Link>
-                    <Link href="/compra" className="text-darkgray hover:text-black transition-colors">
-                        Compra
-                    </Link>
                     <Link href="/vendi" className="text-darkgray hover:text-black transition-colors font-medium">
                         Vendi
                     </Link>

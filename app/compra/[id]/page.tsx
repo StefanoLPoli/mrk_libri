@@ -250,7 +250,7 @@ export default function DettaglioPubblicoPage({ params }: PageProps) {
                     {/* Descrizione venditore */}
                     {listing.description && (
                         <div className="mb-8">
-                            <h3 className="font-medium mb-3">Descrizione del venditore</h3>
+                            <h3 className="font-medium mb-3">Descrizione</h3>
                             <p className="text-gray-700 whitespace-pre-wrap">{listing.description}</p>
                         </div>
                     )}

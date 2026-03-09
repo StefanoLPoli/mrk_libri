@@ -1,6 +1,7 @@
 // app/api/listings/route.ts
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { Prisma } from '@prisma/client';
 
 export async function POST(request: Request) {
     try {
@@ -95,7 +96,7 @@ export async function POST(request: Request) {
                 price: parseFloat(price),
                 condition: condition,
                 description: description || '',
-                images: imagesJson, // Usa le immagini passate
+                images: imagesJson,
                 status: 'ATTIVO'
             }
         });
@@ -116,17 +117,91 @@ export async function POST(request: Request) {
     }
 }
 
-export async function GET() {
+export async function GET(request: Request) {
     try {
+        // Estrai parametri dalla URL
+        const { searchParams } = new URL(request.url);
+        const limit = searchParams.get('limit');
+        const searchQuery = searchParams.get('q');
+        const conditions = searchParams.get('condition'); // "COME_NUOVO,OTTIMO"
+        const minPrice = searchParams.get('minPrice');
+        const maxPrice = searchParams.get('maxPrice');
+        const sortBy = searchParams.get('sort'); // recent, price_asc, price_desc
+
+        // Costruisci la query base
+        const whereClause: Prisma.ListingWhereInput = { 
+            status: 'ATTIVO' 
+        };
+
+        // 🔍 FILTRO RICERCA (titolo, autore, ISBN)
+        if (searchQuery) {
+            whereClause.OR = [
+                { book: { title: { contains: searchQuery } } },
+                { book: { author: { contains: searchQuery } } },
+                { book: { isbn: { contains: searchQuery } } }
+            ];
+        }
+
+        // 🏷️ FILTRO CONDIZIONI
+        if (conditions) {
+            const conditionArray = conditions.split(',');
+            whereClause.condition = {
+                in: conditionArray
+            };
+        }
+
+        // 💰 FILTRO PREZZO
+        if (minPrice || maxPrice) {
+            whereClause.price = {};
+            
+            if (minPrice) {
+                whereClause.price.gte = parseFloat(minPrice);
+            }
+            
+            if (maxPrice) {
+                whereClause.price.lte = parseFloat(maxPrice);
+            }
+        }
+
+        // 📊 ORDINAMENTO
+        let orderBy: Prisma.ListingOrderByWithRelationInput = { createdAt: 'desc' };
+        
+        if (sortBy) {
+            switch(sortBy) {
+                case 'price_asc':
+                    orderBy = { price: 'asc' };
+                    break;
+                case 'price_desc':
+                    orderBy = { price: 'desc' };
+                    break;
+                case 'recent':
+                default:
+                    orderBy = { createdAt: 'desc' };
+                    break;
+            }
+        }
+
+        // 📏 LIMITE (per homepage)
+        const take = limit ? parseInt(limit) : undefined;
+
+        console.log('🔍 Query filtri:', {
+            searchQuery,
+            conditions,
+            minPrice,
+            maxPrice,
+            sortBy
+        });
+
         const listings = await prisma.listing.findMany({
-            where: { status: 'ATTIVO' },
+            where: whereClause,
             include: {
                 book: true,
                 user: {
                     select: { id: true, name: true, email: true }
                 }
             },
-            orderBy: { createdAt: 'desc' }
+            orderBy,
+            take,
         });
         
         return NextResponse.json(listings);

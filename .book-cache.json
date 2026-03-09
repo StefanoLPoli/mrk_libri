@@ -141,5 +141,70 @@
       "description": null
     },
     "timestamp": 1772821893221
+  },
+  "9788822776365": {
+    "book": {
+      "isbn": "9788822776365",
+      "title": "Uno, nessuno e centomila. Ediz. integrale",
+      "author": "Luigi Pirandello",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 2024,
+      "pageCount": null,
+      "coverUrl": "http://books.google.com/books/content?id=9OCd0AEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "description": null
+    },
+    "timestamp": 1773081641147
+  },
+  "9788854191990": {
+    "book": {
+      "isbn": "9788854191990",
+      "title": "Novelle per un anno. Ediz. integrale",
+      "author": "Luigi Pirandello",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 2016,
+      "pageCount": 1472,
+      "coverUrl": "http://books.google.com/books/content?id=TpEivgAACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "description": null
+    },
+    "timestamp": 1773081841742
+  },
+  "9788804782193": {
+    "book": {
+      "isbn": "9788804782193",
+      "title": "Novelle per un anno",
+      "author": "Luigi Pirandello",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 2023,
+      "pageCount": null,
+      "coverUrl": "http://books.google.com/books/content?id=hPAN0AEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "description": null
+    },
+    "timestamp": 1773081918546
+  },
+  "9788804792123": {
+    "book": {
+      "isbn": "9788804792123",
+      "title": "Fermo e Lucia",
+      "author": "Alessandro Manzoni",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 2024,
+      "pageCount": null,
+      "coverUrl": "http://books.google.com/books/content?id=UNPR0AEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "description": null
+    },
+    "timestamp": 1773091502836
+  },
+  "9781514136409": {
+    "book": {
+      "isbn": "9781514136409",
+      "title": "Luigi Pirandello - a Vilanza",
+      "author": "Nino Martoglio",
+      "publisher": "The Perfect Library",
+      "publishedYear": 2015,
+      "pageCount": 42,
+      "coverUrl": null,
+      "description": null
+    },
+    "timestamp": 1773092552354
   }
 }
