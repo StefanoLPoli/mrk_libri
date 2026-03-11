@@ -70,38 +70,6 @@ export default function Home() {
                 <p className="text-gray-600 max-w-2xl mx-auto mb-8 text-lg">
                     Compra e vendi libri tra privati. Senza commissioni, senza complicazioni.
                 </p>
-                
-                {/* Barra di ricerca - stile Wallapop/Amazon */}
-                <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-6">
-                    <div className="flex shadow-lg">
-                        <input
-                            type="text"
-                            value={searchQuery}
-                            onChange={(e) => setSearchQuery(e.target.value)}
-                            placeholder="Cerca per titolo, autore o ISBN..."
-                            className="flex-1 px-6 py-4 text-lg border-2 border-r-0 border-black focus:outline-none"
-                        />
-                        <button
-                            type="submit"
-                            className="px-8 py-4 bg-black text-white text-lg font-medium hover:bg-gray-800 transition-colors border-2 border-black"
-                        >
-                            Cerca
-                        </button>
-                    </div>
-                    <p className="text-sm text-gray-500 mt-2 text-left">
-                        🔍 Esempio: "Harry Potter", "Umberto Eco", "9788807881905"
-                    </p>
-                </form>
-
-                {/* CTA rapide sotto la search */}
-                <div className="flex gap-4 justify-center text-sm">
-                    <Link href="/vendi" className="text-black hover:underline">
-                        Vendi un libro →
-                    </Link>
-                    <Link href="/compra" className="text-gray-600 hover:text-black">
-                        Sfoglia tutti gli annunci →
-                    </Link>
-                </div>
             </div>
 
             {/* Ultimi annunci - stile Amazon */}

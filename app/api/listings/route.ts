@@ -8,7 +8,6 @@ export async function POST(request: Request) {
         const body = await request.json();
         console.log('📥 API ricevuta:', body);
         
-        // Estrai anche images dal body
         const { book, price, condition, description, userId, images } = body;
         
         // Validazione base
@@ -72,7 +71,6 @@ export async function POST(request: Request) {
         // Prepara le immagini (se presenti)
         let imagesJson = null;
         if (images && Array.isArray(images) && images.length > 0) {
-            // Filtra solo URL validi (quelli che iniziano con /uploads/ o http)
             const validImages = images.filter((img: string) => 
                 img && (img.startsWith('/uploads/') || img.startsWith('http'))
             );
@@ -123,10 +121,13 @@ export async function GET(request: Request) {
         const { searchParams } = new URL(request.url);
         const limit = searchParams.get('limit');
         const searchQuery = searchParams.get('q');
-        const conditions = searchParams.get('condition'); // "COME_NUOVO,OTTIMO"
+        const conditions = searchParams.get('condition');
         const minPrice = searchParams.get('minPrice');
         const maxPrice = searchParams.get('maxPrice');
-        const sortBy = searchParams.get('sort'); // recent, price_asc, price_desc
+        const authors = searchParams.get('author');       // NUOVO
+        const publishers = searchParams.get('publisher'); // NUOVO
+        const languages = searchParams.get('language');   // NUOVO
+        const sortBy = searchParams.get('sort');
 
         // Costruisci la query base
         const whereClause: Prisma.ListingWhereInput = { 
@@ -163,6 +164,39 @@ export async function GET(request: Request) {
             }
         }
 
+        // ✍️ FILTRO AUTORI (NUOVO)
+        if (authors) {
+            const authorArray = authors.split(',');
+            whereClause.book = {
+                ...(whereClause.book as Prisma.BookWhereInput),
+                author: {
+                    in: authorArray
+                }
+            };
+        }
+
+        // 🏢 FILTRO EDITORI (NUOVO)
+        if (publishers) {
+            const publisherArray = publishers.split(',');
+            whereClause.book = {
+                ...(whereClause.book as Prisma.BookWhereInput),
+                publisher: {
+                    in: publisherArray
+                }
+            };
+        }
+
+        // 🌍 FILTRO LINGUA (NUOVO)
+        if (languages) {
+            const languageArray = languages.split(',');
+            whereClause.book = {
+                ...(whereClause.book as Prisma.BookWhereInput),
+                language: {
+                    in: languageArray
+                }
+            };
+        }
+
         // 📊 ORDINAMENTO
         let orderBy: Prisma.ListingOrderByWithRelationInput = { createdAt: 'desc' };
         
@@ -189,6 +223,9 @@ export async function GET(request: Request) {
             conditions,
             minPrice,
             maxPrice,
+            authors,
+            publishers,
+            languages,
             sortBy
         });
 

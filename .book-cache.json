@@ -206,5 +206,57 @@
       "description": null
     },
     "timestamp": 1773092552354
+  },
+  "9780240824116": {
+    "book": {
+      "isbn": "9780240824116",
+      "title": "Transmedia",
+      "author": "Tom Dowd",
+      "publisher": "Focal Press",
+      "publishedYear": 2013,
+      "pageCount": 400,
+      "coverUrl": "https://covers.openlibrary.org/b/id/9042502-L.jpg",
+      "description": null
+    },
+    "timestamp": 1773133548062
+  },
+  "9788840014684": {
+    "book": {
+      "isbn": "9788840014684",
+      "title": "L'editoria multimediale del nuovo Web. Semantic Web e Web 2.0",
+      "author": "Francesco Tissoni",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 2010,
+      "pageCount": 130,
+      "coverUrl": "http://books.google.com/books/content?id=rtlZYgEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api",
+      "description": null
+    },
+    "timestamp": 1773133672422
+  },
+  "9788838432651": {
+    "book": {
+      "isbn": "9788838432651",
+      "title": "Nel regno della fantasia",
+      "author": "Geronimo Stilton",
+      "publisher": "Editore sconosciuto",
+      "publishedYear": 2003,
+      "pageCount": 377,
+      "coverUrl": "https://books.google.com/books/content?id=ZEAVAAAACAAJ&printsec=frontcover&source=gbs_api&w=1280&img=1&zoom=3&source=gbs_api",
+      "description": null
+    },
+    "timestamp": 1773134243508
+  },
+  "9780155658110": {
+    "book": {
+      "isbn": "9780155658110",
+      "title": "Orwell's Nineteen eighty-four",
+      "author": "Irving Howe, George Orwell",
+      "publisher": "Harcourt Brace Jovanovich",
+      "publishedYear": 1982,
+      "pageCount": 450,
+      "coverUrl": "https://covers.openlibrary.org/b/id/12628788-L.jpg",
+      "description": null
+    },
+    "timestamp": 1773134288217
   }
 }

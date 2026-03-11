@@ -26,6 +26,15 @@ async function fetchFromOpenLibrary(isbn: string) {
     
     if (!bookData) return null;
     
+    // MIGLIORAMENTO: Ottieni la migliore immagine possibile
+    let coverUrl = null;
+    if (bookData.cover) {
+        // Prova large, altrimenti converti medium o small in large
+        coverUrl = bookData.cover?.large || 
+                  (bookData.cover?.medium ? bookData.cover.medium.replace('-M.jpg', '-L.jpg') : null) ||
+                  (bookData.cover?.small ? bookData.cover.small.replace('-S.jpg', '-L.jpg') : null);
+    }
+    
     return {
         isbn: cleanIsbn,
         title: bookData.title || 'Titolo sconosciuto',
@@ -33,12 +42,13 @@ async function fetchFromOpenLibrary(isbn: string) {
         publisher: bookData.publishers?.[0]?.name || 'Editore sconosciuto',
         publishedYear: bookData.publish_date ? extractYear(bookData.publish_date) : null,
         pageCount: bookData.number_of_pages || null,
-        coverUrl: bookData.cover?.large || bookData.cover?.medium || null,
+        coverUrl,
         description: bookData.excerpts?.[0]?.text || null,
+        language: bookData.language || null,
     };
 }
 
-// Nuova funzione per cercare su Google Books
+// Funzione per cercare su Google Books
 async function fetchFromGoogleBooks(isbn: string) {
     if (!GOOGLE_BOOKS_API_KEY) {
         console.warn('Google Books API key non configurata');
@@ -60,6 +70,28 @@ async function fetchFromGoogleBooks(isbn: string) {
         
         const bookData = data.items[0].volumeInfo;
         
+        // MIGLIORAMENTO: Ottieni immagine HD da Google Books
+        let coverUrl = bookData.imageLinks?.thumbnail || bookData.imageLinks?.smallThumbnail || null;
+        
+        if (coverUrl) {
+            // Google Books: zoom=1 (piccolo), zoom=2 (medio), zoom=3 (grande)
+            coverUrl = coverUrl
+                .replace('zoom=1', 'zoom=3')  // Forza zoom grande
+                .replace('http:', 'https:')   // Forza HTTPS
+                .replace('&edge=curl', '')    // Rimuovi effetto pagina curva
+                .replace('&printsec=frontcover', '&printsec=frontcover&source=gbs_api'); // Aggiungi parametri
+            
+            // Se l'URL contiene '&pg=PP1&img=1', prova a cambiare img=1 con img=10 per qualità maggiore
+            if (coverUrl.includes('&pg=PP1&img=1')) {
+                coverUrl = coverUrl.replace('&pg=PP1&img=1', '&pg=PP1&img=10');
+            }
+            
+            // Alcune immagini Google hanno bisogno di questa trasformazione
+            if (coverUrl.includes('&source=gbs_api')) {
+                coverUrl = coverUrl.replace('&source=gbs_api', '&source=gbs_api&w=1280'); // Forza larghezza
+            }
+        }
+        
         return {
             isbn: cleanIsbn,
             title: bookData.title || 'Titolo sconosciuto',
@@ -67,8 +99,9 @@ async function fetchFromGoogleBooks(isbn: string) {
             publisher: bookData.publisher || 'Editore sconosciuto',
             publishedYear: bookData.publishedDate ? extractYear(bookData.publishedDate) : null,
             pageCount: bookData.pageCount || null,
-            coverUrl: bookData.imageLinks?.thumbnail || bookData.imageLinks?.smallThumbnail || null,
+            coverUrl,
             description: bookData.description || null,
+            language: bookData.language || null,
         };
     } catch (error) {
         console.error('Errore Google Books:', error);
@@ -109,6 +142,7 @@ async function getBookWithCache(isbn: string) {
     
     // Se trovato, salva in cache
     if (book) {
+        console.log(`✅ Trovato su ${source} con immagine:`, book.coverUrl ? '✅' : '❌');
         bookCache.set(cleanIsbn, book);
     }
     
